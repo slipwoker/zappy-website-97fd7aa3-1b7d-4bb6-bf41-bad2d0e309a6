@@ -1,53 +1,43 @@
-# LegalCRM — Generative Engine Optimization Map
-
-> A טכנולוגיה משפטית business.
+# Business — Generative Engine Optimization Map
 
 ---
 
 ## Pages
 
 ### בית
-https://legalcrm-97fd7aa3.zappy5.app
+https://example.com
 
 ### פתרונות
-https://legalcrm-97fd7aa3.zappy5.app/solutions
+https://example.com/solutions
 
 ### אבטחה
-https://legalcrm-97fd7aa3.zappy5.app/security
+https://example.com/security
 
 ### צור קשר
-https://legalcrm-97fd7aa3.zappy5.app/contact
+https://example.com/contact
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://legalcrm-97fd7aa3.zappy5.app/privacy
+https://example.com/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://legalcrm-97fd7aa3.zappy5.app/terms
+https://example.com/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://legalcrm-97fd7aa3.zappy5.app/accessibility
+https://example.com/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
 
 # Business Context (for LLM understanding)
 
-## About LegalCRM
-LegalCRM is a business in the טכנולוגיה משפטית industry.
-
-## Target Audience
-עורכי דין ומשרדי עורכי דין בישראל
-
-## Industry
-טכנולוגיה משפטית
-
+## About Business
 ---
 
 # Additional Resources
 
-- **Sitemap**: https://legalcrm-97fd7aa3.zappy5.app/sitemap.xml
-- **Robots.txt**: https://legalcrm-97fd7aa3.zappy5.app/robots.txt
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt
