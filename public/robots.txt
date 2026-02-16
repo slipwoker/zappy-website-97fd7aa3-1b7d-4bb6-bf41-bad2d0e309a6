@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://legalcrm-97fd7aa3.zappy5.app/sitemap.xml

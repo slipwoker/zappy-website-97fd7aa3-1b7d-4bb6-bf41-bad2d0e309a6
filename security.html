@@ -1,0 +1,643 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אבטחה - LegalCRM</title>
+  <meta name="description" content="אבטחה - LegalCRM provides professional טכנולוגיה משפטית services. Specializing in ניהול צוות.">
+  <meta name="keywords" content="ניהול צוות, מערכת CRM למשרדי עורכי דין בישראל, תוכנה לניהול תיקים משפטיים, מערכת ניהול לקוחות לעורכי דין">
+  <meta name="robots" content="index, follow">
+  
+  <meta property="og:title" content="אבטחה - LegalCRM">
+  <meta property="og:description" content="אבטחה - LegalCRM provides professional טכנולוגיה משפטית services. Specializing in ניהול צוות.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="אבטחה - LegalCRM">
+  <meta name="twitter:description" content="אבטחה - LegalCRM provides professional טכנולוגיה משפטית services. Specializing in ניהול צוות.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+<!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '97fd7aa3-1b7d-4bb6-bf41-bad2d0e309a6',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+</head>
+<body>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/business-logo.webp" alt="LegalCRM" class="logo" />
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/solutions">פתרונות</a></li><li><a href="/security">אבטחה</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="security-hero-section" data-layout-spec="אבטחה-hero" data-hero-type="fullscreen-scrim">
+  <!-- Background Image -->
+  <div class="security-hero-bg-wrapper">
+    <img data-hero-bg="true" data-placeholder="security-hero-bg" data-context="Dark cinematic security control room scene for legal tech company. Abstract blurred lock iconography and security UI elements displayed on multiple monitors in a dark professional office. Subtle cyan and purple neon reflections on glossy surfaces. Clean dramatic lighting with bokeh effect. Professional high-tech atmosphere. Focus on abstract security symbols, encrypted data visualization, and access control interfaces. Dark moody color palette with cyan (#00D4FF) and purple (#7C3AED) accent glows. Shot from slightly elevated angle showing monitors and security dashboard. Photorealistic, cinematic quality, depth of field." width="1920" height="1080" src="/assets/site-security-hero-bg.webp" alt="ממשק אבטחה מתקדם למערכת ניהול משפטית" class="security-hero-bg-image">
+  </div>
+
+  <!-- Scrim Overlay -->
+  <div class="security-hero-scrim" aria-hidden="true"></div>
+
+  <!-- Content Overlay -->
+  <div class="security-hero-content">
+    <div class="security-hero-text-group">
+      <h1 class="security-hero-headline">אבטחה ופרטיות,<br>מוסברות בבהירות</h1>
+      <h3 class="security-hero-subtitle">מחויבות ברורה ובשפה פשוטה להגנה על נתוני המשתמשים ושמירה על בקרת גישה מלאה</h3>
+      <div class="security-hero-cta-group">
+        <a href="#contact" class="security-hero-cta-primary">שאלות אבטחה? צור קשר</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Circuit Trace Bottom Divider -->
+  <div class="security-hero-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="security-hero-divider-svg">
+      <defs>
+        <linearGradient id="security-circuit-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:0.4"></stop>
+          <stop offset="50%" style="stop-color:#A855F7;stop-opacity:0.5"></stop>
+          <stop offset="100%" style="stop-color:#00D4FF;stop-opacity:0.3"></stop>
+        </linearGradient>
+      </defs>
+      <!-- Main circuit line with nodes -->
+      <path d="M0,30 L180,30 L185,25 L195,25 L200,30 L380,30 L385,35 L395,35 L400,30 L580,30 L585,25 L595,25 L600,30 L780,30 L785,35 L795,35 L800,30 L980,30 L985,25 L995,25 L1000,30 L1200,30" stroke="url(#security-circuit-gradient)" stroke-width="2" fill="none" opacity="0.8"></path>
+      <!-- Circuit nodes -->
+      <circle cx="200" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite"></animate>
+      </circle>
+      <circle cx="400" cy="30" r="4" fill="#A855F7" opacity="0.9">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"></animate>
+      </circle>
+      <circle cx="600" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.8s" repeatCount="indefinite"></animate>
+      </circle>
+      <circle cx="800" cy="30" r="4" fill="#A855F7" opacity="0.9">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.2s" repeatCount="indefinite"></animate>
+      </circle>
+      <circle cx="1000" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.8s" repeatCount="indefinite"></animate>
+      </circle>
+      <!-- Fade-out mask at bottom -->
+      <rect x="0" y="40" width="1200" height="20" fill="var(--bg-light)"></rect>
+    </svg>
+  </div>
+</section>
+
+<section class="security-trust-section" data-layout-spec="אבטחה-trust">
+  <div class="security-trust-container">
+    <div class="security-trust-header">
+      <h2>מה שחשוב לנו</h2>
+      <p>אנחנו מבינים שמידע משפטי רגיש. כל החלטת אבטחה שלנו מתוכננת כדי להגן על הנתונים שלך ולשמור על סטנדרטים גבוהים של פרטיות ואמינות.</p>
+    </div>
+
+    <div class="security-trust-grid">
+      <article class="trust-pillar-card">
+        <div class="pillar-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 4L4 10V16C4 22.6274 9.37258 28 16 28C22.6274 28 28 22.6274 28 16V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 16L15 19L21 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <h3>בקרת גישה מתקדמת</h3>
+        <p>הרשאות מדורגות, אימות דו-שלבי ומעקב אחר כל פעולה במערכת. רק משתמשים מורשים יכולים לגשת לנתונים רלוונטיים.</p>
+      </article>
+
+      <article class="trust-pillar-card">
+        <div class="pillar-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="10" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"></rect>
+            <path d="M11 10V8C11 5.79086 12.7909 4 15 4H17C19.2091 4 21 5.79086 21 8V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            <circle cx="16" cy="18" r="2" fill="currentColor"></circle>
+            <path d="M16 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>טיפול ומזעור מידע</h3>
+        <p>אנחנו אוספים רק את המידע ההכרחי לתפעול המערכת, מצפינים אותו בעת העברה ואחסון, ושומרים על מדיניות שמירה ברורה.</p>
+      </article>
+
+      <article class="trust-pillar-card">
+        <div class="pillar-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="2"></circle>
+            <path d="M16 12V16L19 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M8 8L6 6M24 8L26 6M8 24L6 26M24 24L26 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>ניטור ומוכנות לאירועים</h3>
+        <p>המערכת מתוכננת עם יכולות ניטור רציפות ותהליכי תגובה מובנים, כדי לזהות ולטפל בחריגות במהירות.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="security-trust-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 2" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="neon-glow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:rgba(0,212,255,0.1);stop-opacity:1"></stop>
+          <stop offset="50%" style="stop-color:rgba(0,212,255,0.4);stop-opacity:1"></stop>
+          <stop offset="100%" style="stop-color:rgba(0,212,255,0.8);stop-opacity:1"></stop>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="1" x2="1200" y2="1" stroke="url(#neon-glow-gradient)" stroke-width="2"></line>
+    </svg>
+  </div>
+</section>
+
+<section class="security-architecture-section" data-layout-spec="אבטחה-architecture">
+  <div class="security-architecture-container">
+    <div class="security-architecture-content">
+      <div class="security-architecture-explanation">
+        <h2>האבטחה בנויה מהבסיס</h2>
+        <p>כל שכבה במערכת מתוכננת להגן על המידע המשפטי שלך. מהצפנה מלאה ועד בקרת גישה מוגבלת, אנחנו מבטיחים שהנתונים שלך נשארים בידיים הנכונות בלבד.</p>
+        
+        <div class="security-architecture-callouts">
+          <div class="security-architecture-callout">
+            <h3>הצפנה בתעבורה</h3>
+            <p>כל העברת מידע מוצפנת ב-TLS 1.3 לאבטחה מקסימלית</p>
+          </div>
+          
+          <div class="security-architecture-callout">
+            <h3>גישה מוגבלת</h3>
+            <p>הרשאות מדורגות מבטיחות שכל משתמש רואה רק מה שצריך</p>
+          </div>
+          
+          <div class="security-architecture-callout">
+            <h3>יומני ביקורת</h3>
+            <p>תיעוד מלא של כל פעולה למעקב ושקיפות מלאה</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="security-architecture-diagram">
+        <img data-placeholder="security-architecture-image-1" data-context="A dark-themed technical architecture diagram for a legal CRM system showing interconnected components: client application at top, secure API gateway in center, database storage and audit logging at bottom. Use neon cyan and purple linework (#00D4FF, #7C3AED) on dark background (#0F1117). Style: simplified, clean lines like a control room display, with glowing connection lines between components. Include icons for shield/lock, database cylinder, and audit checklist. Modern, minimalist tech illustration with subtle glow effects." width="600" height="500" src="/assets/site-security-architecture-image-1.webp" alt="דיאגרמת ארכיטקטורה של מערכת אבטחה">
+      </div>
+    </div>
+  </div>
+  
+  <div class="security-architecture-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="security-fog-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:0.25"></stop>
+          <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.18"></stop>
+          <stop offset="100%" style="stop-color:#F5F6FA;stop-opacity:0.05"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,100 L0,45 Q150,38 300,42 T600,40 Q750,44 900,38 T1200,42 L1200,100 Z" fill="url(#security-fog-gradient)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="security-policies-section" data-layout-spec="אבטחה-policies">
+  <div class="security-policies-container">
+    <div class="security-policies-header">
+      <h2>מדיניות אבטחה בשפה פשוטה</h2>
+      <p>אנחנו מאמינים שאבטחת מידע צריכה להיות שקופה ומובנת. להלן המדיניות שלנו בנושאי אבטחה ופרטיות, מוצגות בצורה ברורה ונגישה.</p>
+    </div>
+
+    <div class="security-policies-grid">
+      <article class="policy-card">
+        <h3>שמירת מידע</h3>
+        <p>אנחנו שומרים את המידע שלך כל עוד החשבון פעיל. מידע ארכיוני נשמר למשך 7 שנים בהתאם לדרישות החוק הישראלי, ולאחר מכן נמחק באופן מאובטח ובלתי הפיך.</p>
+      </article>
+
+      <article class="policy-card">
+        <h3>מחיקת חשבון</h3>
+        <p>ניתן למחוק חשבון בכל עת דרך הגדרות המערכת. לאחר בקשת מחיקה, כל המידע האישי נמחק תוך 30 יום. מידע משפטי נדרש (כמו חשבוניות) נשמר בהתאם לחוק.</p>
+      </article>
+
+      <article class="policy-card">
+        <h3>הרשאות וגישה</h3>
+        <p>כל משתמש במערכת מקבל הרשאות ספציפיות בהתאם לתפקידו. ניתן לנהל הרשאות ברמת דיוק גבוהה, כולל גישה לתיקים, לקוחות ומידע רגיש. כל פעולה מתועדת בלוג מערכת.</p>
+      </article>
+
+      <article class="policy-card">
+        <h3>דיווח על פגיעויות</h3>
+        <p>מצאת בעיית אבטחה? נשמח לשמוע ממך. שלח דוא"ל ל-<a href="mailto:security@legalcrm.co.il" class="policy-link">security@legalcrm.co.il</a> ונטפל בנושא בתוך 48 שעות. אנחנו מעריכים דיווחים אחראיים ופועלים במהירות לסגירת פערים.</p>
+      </article>
+
+      <article class="policy-card">
+        <h3>פרטיות משתמשים</h3>
+        <p>המידע שלך שייך לך. אנחנו לא משתמשים במידע לקוחות לצרכי שיווק, לא משתפים עם צדדים שלישיים, ולא מאמנים מודלי AI על התכנים שלך. הכל נשאר מוצפן ומאובטח בשרתים בישראל.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="security-policies-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,30 Q200,28 400,32 T800,28 Q1000,32 1200,30 L1200,60 Z" fill="var(--bg-dark)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="security-cta-section" data-layout-spec="אבטחה-cta">
+  <div class="security-cta-container">
+    <div class="security-cta-content">
+      <h2 class="security-cta-title">רוצים לקבל את הפרטים שחשובים באמת?</h2>
+      <p class="security-cta-description">אנחנו כאן כדי לענות על כל שאלה ולהבהיר כיצד LegalCRM יכול לשדרג את משרדכם. צוות התמיכה שלנו זמין ומחויב לספק לכם מענה מקצועי תוך 24 שעות.</p>
+      <div class="security-cta-buttons">
+        <a href="contact.html" class="btn-primary">צרו קשר עכשיו</a>
+        <a href="solutions.html" class="btn-secondary">גלו את הפתרונות שלנו</a>
+      </div>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-column footer-about">
+        <img src="/assets/business-logo.webp" alt="LegalCRM" class="logo" />
+        <p class="footer-description">פתרונות CRM מתקדמים למשרדי עורכי דין. ניהול יעיל, אבטחה מקסימלית, חוויית משתמש מעולה.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">קישורים מהירים</h3>
+        <ul class="footer-links">
+          <li><a href="/solutions">פתרונות</a></li>
+          <li><a href="/security">אבטחה</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">יצירת קשר</h3>
+        <ul class="footer-contact">
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:[business_email]">[business_email]</a>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <a href="tel:[business_phone]">[business_phone]</a>
+          </li>
+          <li><a href="/"><i class="fas fa-map-marker-alt"></i>
+            <span>[business_address]</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">עקבו אחרינו</h3>
+        <div class="social-links">
+          <a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="separator">|</span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="separator">|</span>
+        <a href="/accessibility">הצהרת נגישות</a>
+      </div>
+      <div class="footer-copyright">
+        <p>© 2026 LegalCRM. כל הזכויות שמורות.</p>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <script src="/script.js"></script>
+
+    <div data-integration="accessibility:toolbar"></div>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body></html>
